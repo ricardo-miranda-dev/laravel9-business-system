@@ -1,3 +1,10 @@
+@extends('template')
+
+@section('title','Panel')
+@push('css')
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.min.css" rel="stylesheet" />
+@endpush
+@section('content')
 <div class="container-fluid px-4">
                         <h1 class="mt-4">Dashboard</h1>
                         <ol class="breadcrumb mb-4">
@@ -550,3 +557,11 @@
                             </div>
                         </div>
                     </div>
+@endsection
+@push('js')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+        <script src="{{ asset('assets/demo/chart-area-demo.js') }}"></script>
+        <script src="{{ asset('assets/demo/chart-bar-demo.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="{{ asset('js/datatables-simple-demo.js') }}"></script>
+@endpush
