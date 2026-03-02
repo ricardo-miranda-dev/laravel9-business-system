@@ -24,7 +24,7 @@ services:
       MYSQL_USER: laravel
       MYSQL_PASSWORD: 1q2w3e4r5t*laravel
     ports:
-      - "3306:3306"
+      - "3307:3306"
     volumes:
       - dbdata:/var/lib/mysql
     networks:
@@ -34,7 +34,7 @@ services:
     container_name: laravel_phpmyadmin
     restart: unless-stopped
     ports:
-      - "8080:80"
+      - "8081:80"
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
