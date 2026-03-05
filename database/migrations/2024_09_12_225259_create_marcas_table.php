@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('marcas', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('caracteristicas_id')->constrained('caracteristicas')->onDelete('cascade');
+            $table->foreignId('caracteristica_id')->constrained('caracteristicas')->onDelete('cascade');
             $table->timestamps();
         });
     }
