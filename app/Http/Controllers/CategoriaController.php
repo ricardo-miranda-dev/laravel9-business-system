@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreCategoriaRequest;
+use App\Http\Requests\UpdateCategoriaRequest;
+use App\Models\Caracteristica;
+use App\Models\Categoria;
+use Illuminate\Support\Facades\DB;
 
 class CategoriaController extends Controller
 {
@@ -12,7 +16,9 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-        return view('categoria.index');
+        $categorias =Categoria::with('caracteristica')->latest()->get();
+        //dd($categorias);
+        return view('categoria.index',['categorias' => $categorias]);
     }
 
     /**
@@ -28,7 +34,19 @@ class CategoriaController extends Controller
      */
     public function store(StoreCategoriaRequest $request)
     {
-        dd($request);
+        //dd($request);
+        try {
+            DB::beginTransaction();
+            $caracteristica=Caracteristica::create($request->validated());
+            $caracteristica->categoria()->create([
+                'caracteristica_id' =>$caracteristica->id
+            ]);
+            DB::commit();
+        } catch (Exception $exc) {
+            //echo $exc->getTraceAsString();
+            DB::rollBack();
+        }
+        return redirect()->route('categorias.index')->with('success','Categoría registrada exitosamente');
     }
 
     /**
@@ -42,17 +60,20 @@ class CategoriaController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Categoria $categoria)
     {
-        //
+        //dd($categoria);
+        return view('categoria.edit',['categoria' => $categoria]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateCategoriaRequest $request, Categoria $categoria)
     {
-        //
+        Caracteristica::where('id',$categoria->caracteristica->id)
+                ->update($request->validated());
+        return redirect()->route('categorias.index')->with('success','Categoría editada exitosamente');
     }
 
     /**
@@ -60,6 +81,22 @@ class CategoriaController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //dd($id);
+        $categoria = Categoria:: find($id);
+        if($categoria->caracteristica->estado == 1){
+            Caracteristica::where('id',$categoria->caracteristica->id)
+                ->update([
+                    'estado' => 0
+                ]);
+            $message='Categoría eliminada exitosamente';
+        }else{
+            Caracteristica::where('id',$categoria->caracteristica->id)
+                ->update([
+                    'estado' => 1
+                ]);
+            $message='Categoría restaurada exitosamente';
+        }
+        
+        return redirect()->route('categorias.index')->with('success',$message);
     }
 }
