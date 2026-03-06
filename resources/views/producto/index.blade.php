@@ -1,6 +1,6 @@
 @extends('template')
 
-@section('title','marcas')
+@section('title','productos')
 
 @push('css')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -50,43 +50,54 @@
                                 <table id="datatablesSimple"  class="table table-striped ">
                                     <thead>
                                         <tr>
-                                            <th>Nombre</th>
-                                            <th>Descripción</th>
+                                            <th>Código</th>
+                                            <th>Nombre</th>                                        
+                                            <th>Marca</th>
+                                            <th>Presentación</th>
+                                            <th>Categorias</th>
                                             <th>Estado</th> 
                                             <th>Acción</th>                                           
                                         </tr>
                                     </thead>
-                                 
                                     <tbody>
-<!--                                        @foreach($productos as $producto)
+                                        @foreach($productos as $producto)
                                         <tr>
-                                            <td>{{$marca->caracteristica->nombre}}</td>
-                                            <td>{{$marca->caracteristica->descripcion}}</td>
+                                            <td>{{$producto->codigo}}</td>
+                                            <td>{{$producto->nombre}}</td>                                           
+                                            <td>{{$producto->marca->caracteristica->nombre}}</td>
+                                            <td>{{$producto->presentacione->caracteristica->nombre}}</td>
                                             <td>
-                                                @if($marca->caracteristica->estado==1)
-                                                <span class="fw-bolder p-1 rounded bg-primary text-white">Activo</span>
+                                                @foreach($producto->categorias as $categoria)
+                                                <div class='container'>
+                                                    <div class='row'>
+                                                        <span class="m-1 rounded-pill p-1 bg-secondary text-white text-center">{{$categoria->caracteristica->nombre}}</span>                                                   </div>
+                                                </div>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @if($producto->estado==1)
+                                                <span class="fw-bolder p-1 rounded bg-primary text-white text-center">Activo</span>
                                                 @else
-                                                 <span class="fw-bolder p-1 rounded bg-danger text-white">Eliminado</span>
+                                                 <span class="fw-bolder p-1 rounded bg-danger text-white text-center">Eliminado</span>
                                                 @endif 
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                                    <form action="{{route('marcas.edit',['marca' =>$marca])}}" method="get">
+                                                    <form action="{{route('productos.edit',['producto' =>$producto])}}" method="get">
                                                         @csrf
                                                         <button type="submit" class="btn btn-info">Editar</button>                                                        
                                                     </form>
-                                                    @if($marca->caracteristica->estado==1)
-                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$marca->id}}">Eliminar</button>
+                                                    <button type="submit" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#verModal-{{$producto->id}}">Ver</button>
+                                                    @if($producto->estado==1)
+                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$producto->id}}">Eliminar</button>
                                                     @else
-                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$marca->id}}">Restaurar</button>
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$producto->id}}">Restaurar</button>
                                                     @endif
                                               </div>
                                             </td>
                                         </tr>
-                                        
 
-                                         Modal 
-                                        <div class="modal fade" id="confirmModal-{{$marca->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="confirmModal-{{$producto->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -95,11 +106,11 @@
                                                     </div>
                                                     <div class="modal-body">
                                                      
-                                                      {{$marca->caracteristica->estado == 1 ? '¿Seguro que quieres eliminar esta marca? ':'¿Seguro que quieres restaurar esta marca? ' }}
+                                                      {{$producto->estado == 1 ? '¿Seguro que quieres eliminar este producto? ':'¿Seguro que quieres restaurar este producto? ' }}
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                        <form action='{{route('marcas.destroy',['marca' => $marca->id])}}' method="post">
+                                                        <form action='{{route('productos.destroy',['producto' => $producto->id])}}' method="post">
                                                             @method('DELETE')
                                                             @csrf
                                                             <button type="submit" class="btn btn-danger">Confirmar</button> 
@@ -109,8 +120,44 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        @endforeach-->
+                                        <div class="modal fade" id="verModal-{{$producto->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-scrollable">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title" id="exampleModalLabel">Detalles del  producto</h5>
+                                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row mb-3">
+                                                        <label for=''><span class="fw-bolder">Descripción:</span> {{$producto->descripcion}}</label>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <label for=''><span class="fw-bolder">Fecha de vencimiento:</span> {{$producto->fecha_vencimiento==''?'No  tiene':$producto->fecha_vencimiento}}</label>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <label for=''><span class="fw-bolder">Stock:</span> {{$producto->stock}}</label>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <label class="fw-bolder">Imagen:</label>
+                                                        <div>
+                                                            @if($producto->img_path != null)
+                                                                <img  src="{{ Storage::url('productos/'.$producto->img_path)}}"  alt="{{$producto->nombre}}" class='img-fluid .img-thumbnail border border-4 rounded'>
+                                                            @else
+                                                                <img  src=""  alt="{{$producto->nombre}}" >
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                                 
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        @endforeach
                                     </tbody>
+                                    
                                 </table>
                             </div>
                         </div>

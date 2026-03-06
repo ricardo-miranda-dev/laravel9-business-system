@@ -17,8 +17,8 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::all(['*']);
-        return view('producto.index',['productos' => $productos]);
+        $productos = Producto::with(['categorias.caracteristica','marca.caracteristica','presentacione.caracteristica'])->latest()->get();
+        return view('producto.index', compact('productos'));
     }
 
     /**
@@ -26,13 +26,16 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        $marcas = Marca::join('caracteristicas as c','marcas.caracteristica_id','=','c.id')
+        $marcas = Marca::join('caracteristicas as c','marcas.caracteristica_id','=','c.id') 
+                ->select('marcas.id as id','c.nombre as nombre')
                 ->where('c.estado',1)
                 ->get();
         $presentaciones = Presentacione::join('caracteristicas as c','presentaciones.caracteristica_id','=','c.id')
+                ->select('presentaciones.id as id','c.nombre as nombre')
                 ->where('c.estado',1)
                 ->get();
         $categorias = Categoria::join('caracteristicas as c','categorias.caracteristica_id','=','c.id')
+                ->select('categorias.id as id','c.nombre as nombre')
                 ->where('c.estado',1)
                 ->get();
         return view('producto.create', compact('marcas', 'presentaciones','categorias'));
@@ -41,9 +44,37 @@ class ProductoController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProductoRequest $request)
     {
-        //
+        try{
+            DB::beginTransaction();
+            $producto = new Producto();
+            if($request->hasFile('img_path')){
+                $name = $producto->handleUploadImage($request->file('img_path'));
+            }else{
+                $name =  null;
+            }
+            $producto->fill([
+                'codigo'=>$request->codigo,
+                'nombre'=>$request->nombre,
+                'descripcion'=>$request->descripcion,
+                'fecha_vencimiento'=>$request->fecha_vencimiento,
+                'img_path'=>$name,
+                'marca_id'=>$request->marca_id,
+                'presentacione_id'=>$request->presentacione_id,
+            ]);
+            $producto->save();
+            
+            //Categorias
+            $categorias = $request->get('categorias');
+            $producto->categorias()->attach($categorias);
+            
+            
+            DB::commit();
+        } catch (Exception $ex) {
+            DB::rollBack();
+        }
+        return redirect()->route('productos.index')->with('success','Producto registrado exitosamente');
     }
 
     /**

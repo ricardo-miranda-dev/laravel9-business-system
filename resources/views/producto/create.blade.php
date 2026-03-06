@@ -22,7 +22,7 @@
         </ol>
         
         <div class="container w-100 border border-3 border-primary rounded p-4 mt-3">
-            <form action="{{route('productos.store')}}" method='post'>
+            <form action="{{route('productos.store')}}" method='post' enctype="multipart/form-data">
                 @csrf
                 <div class="row g-3">
                     <div class="col-md-6 mb-2">
@@ -54,42 +54,42 @@
                         @enderror
                     </div>
                     <div class="col-md-6 mb-2">
-                        <label for='image_path' class="form-label">Imagen:</label>
-                        <input type="file" id="image_path" name="image_path" class="form-control" accept="Image/*">
-                        @error('image_path')
+                        <label for='img_path' class="form-label">Imagen:</label>
+                        <input type="file" id="img_path" name="img_path" class="form-control" accept="image/*">
+                        @error('img_path')
                         <small class="text-danger">{{'* '.$message}}</small>
                         @enderror
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for='marca' class="form-label">Marca:</label>
-                        <select data-size="4" title="Seleccione una marca" data-live-search="true" id="marca" name="marca" class="form-control selectpicker show-tick" >
+                        <select data-size="4" title="Seleccione una marca" data-live-search="true" id="marca_id" name="marca_id" class="form-control selectpicker show-tick" >
                             @foreach($marcas as $marca)
-                            <option value="{{$marca->id}}">{{$marca->caracteristica->nombre}}</option>
+                            <option value="{{$marca->id}}" {{old('marca_id')==$marca->id?'selected':''}}>{{$marca->nombre}}</option>
                             @endforeach
                         </select>   
-                        @error('marca')
+                        @error('marca_id')
                         <small class="text-danger">{{'* '.$message}}</small>
                         @enderror
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for='presentacion' class="form-label">Presentacion:</label>
-                        <select data-size="4" title="Seleccione una presentación" data-live-search="true" id="presentacion" name="presentacion" class="form-control selectpicker show-tick" >
+                        <select data-size="4" title="Seleccione una presentación" data-live-search="true" id="presentacione_id" name="presentacione_id" class="form-control selectpicker show-tick" >
                             @foreach($presentaciones as $presentacione)
-                            <option value="{{$presentacione->id}}">{{$presentacione->caracteristica->nombre}}</option>
+                            <option value="{{$presentacione->id}}" {{old('presentacione_id')==$presentacione->id?'selected':''}}>{{$presentacione->nombre}}</option>
                             @endforeach
                         </select>  
-                        @error('presentacion')
+                        @error('presentacione_id')
                         <small class="text-danger">{{'* '.$message}}</small>
                         @enderror
                     </div>
                     <div class="col-md-6 mb-2">
                         <label for='categoria' class="form-label">Categorias:</label>
-                        <select data-size="4" title="Seleccione las categorias" data-live-search="true" id="categoria" name="categoria" class="form-control selectpicker show-tick" multiple>
+                        <select data-size="4" title="Seleccione las categorias" data-live-search="true" id="categorias[]" name="categorias[]" class="form-control selectpicker show-tick" multiple>
                             @foreach($categorias as $categoria)
-                            <option value="{{$categoria->id}}">{{$categoria->caracteristica->nombre}}</option>
+                            <option value="{{$categoria->id}}" {{ (in_array($categoria->id, (array)old('categorias',[]))) ? 'selected' : '' }}>{{$categoria->nombre}}</option>
                             @endforeach
                         </select>
-                        @error('categoria')
+                        @error('categorias[]')
                         <small class="text-danger">{{'* '.$message}}</small>
                         @enderror                        
                     </div>
