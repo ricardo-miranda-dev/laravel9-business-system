@@ -29,3 +29,7 @@ Homestead.json
 .phpactor.json
 auth.json
 /nbproject/private/
+# temporary editor files
+*~
+*.swp
+.LCK*
