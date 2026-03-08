@@ -56,16 +56,24 @@
                                 Categorías
                             </a>
                             <a class="nav-link" href="{{ route('presentaciones.index')}}">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-tag"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-book"></i></div>
                                 Presentaciones
                             </a>
                             <a class="nav-link" href="{{ route('marcas.index')}}">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-tag"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-earth-americas"></i></div>
                                 Marcas
                             </a>
                             <a class="nav-link" href="{{ route('productos.index')}}">
                                 <div class="sb-nav-link-icon"><i class="fa-brands fa-shopify"></i></div>
                                 Productos
+                            </a>
+                            <a class="nav-link" href="{{ route('clientes.index')}}">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-handshake"></i></div>
+                                Clientes
+                            </a>
+                            <a class="nav-link" href="{{ route('proveedores.index')}}">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-handshake"></i></div>
+                                Proveedores
                             </a>
                             <a class="nav-link" href="#">
                                 <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
