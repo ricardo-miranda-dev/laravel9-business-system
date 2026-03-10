@@ -21,7 +21,8 @@
             <li class="breadcrumb-item active">Crear compra</li>
         </ol>
         
-        <form action="" method='post' >
+        <form action="{{ route('compras.store')}}" method='post' >
+            @csrf
             <div class="container mt-4">
                 <div class="row gy-4">
                     <!-- Compra producto -->
@@ -96,7 +97,7 @@
                                                 <tr>
                                                     <th colspan="4"></th>
                                                     <th class="text-end">Total: </th>
-                                                    <th class="text-end"><span id="total"></span></th>
+                                                    <th class="text-end"><input type="hidden" name="total" value="0" id="inputTotal"><span id="total"></span></th>
                                                     <th></th>
                                                 </tr>
                                             </tfoot>
@@ -113,7 +114,7 @@
                     <!-- Producto -->
                     <div class="col-md-4">
                         <div class="text-white p-1 bg-secondary text-center">
-                            Detalles generales
+                            Datos generales
                         </div>  
                         <div class="p-3 border border-3 border-secondary">
                             <div class="row">
@@ -124,6 +125,9 @@
                                             <option value="{{$item->id}}">{{$item->persona->razon_social}}</option>
                                         @endforeach                                                 
                                     </select>
+                                    @error('proveedore_id') 
+                                        <small class='text-danger'>{{ '*'.$message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="col-md-12 mb-2">
                                     <label for='comprobante_id' class="form-label">Tipo comprobante:</label>
@@ -132,18 +136,32 @@
                                             <option value="{{$item->id}}">{{$item->tipo_comprobante}}</option>
                                         @endforeach                                                 
                                     </select>
+                                    @error('comprobante_id') 
+                                        <small class='text-danger'>{{ '*'.$message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="col-md-12 mb-2">
                                     <label for='numero_comprobante' class="form-label">Número de comprobante:</label>
                                     <input required type="text" name="numero_comprobante" id="numero_comprobante" class="form-control" placeholder="">
+                                    @error('numero_comprobante') 
+                                        <small class='text-danger'>{{ '*'.$message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <label for='impuesto' class="form-label">Impuesto(IVA):</label>
                                     <input readonly type="text" name="impuesto" id="impuesto" class="form-control border-secondary" >
+                                    @error('impuesto') 
+                                        <small class='text-danger'>{{ '*'.$message }}</small>
+                                    @enderror
                                 </div>
                                 <div class="col-md-6 mb-2">
                                     <label for='fecha' class="form-label">Fecha:</label>
                                     <input readonly type="text" name="fecha" id="fecha" class="form-control border-secondary" value="<?php echo date('Y-m-d') ?>" >
+                                    <?php  
+                                    use Carbon\Carbon;
+                                    $fecha_hora = Carbon::now()->toDateTimeString();
+                                    ?>                                    
+                                    <input readonly type="hidden" name="fecha_hora" id="fecha_hora" value="{{$fecha_hora}}">
                                 </div>
                                 <div class="col-md-12 gy-4 text-center">
                                     <button id="guardar" type="submit" class="btn btn-primary">Guardar</button>
@@ -196,7 +214,7 @@
             agregarProducto();            
         });
         
-        $('#impuesto').val(impuesto+'%');
+//        $('#impuesto').val(impuesto+'%');
         
         $('#btncancelarCompra').click(function(){            
             cancelarCompra();
@@ -239,6 +257,8 @@
         $('#total').html(0);total=0;cont=0;subtotal=[];
         limpiarCampos();
         disableButtons();
+        $('#impuesto').val(iva);
+        $('#inputTotal').val(total);
     }
     
     function agregarProducto(){
@@ -257,13 +277,15 @@
                     sumas+=subtotal[cont];
                     iva = Number(((sumas/100)*impuesto).toFixed(2));
                     total=sumas+iva;
+                    $('#impuesto').val(iva);
+                    $('#inputTotal').val(total);
 
                     let fila='<tr id="fila'+cont+'">'+                  
                                 '<td>'+(cont+1)+'</td>'+
-                                '<td>'+nameProducto+'</td>'+
-                                '<td>'+cantidad+'</td>'+
-                                '<td>'+precio_compra+'</td>'+
-                                '<td>'+precio_venta+'</td>'+
+                                '<td><input type="hidden" name="arrayidproducto[]" value="'+idProducto+'">'+nameProducto+'</td>'+
+                                '<td><input type="hidden" name="arraycantidad[]" value="'+cantidad+'">'+cantidad+'</td>'+
+                                '<td><input type="hidden" name="arraypreciocompra[]" value="'+precio_compra+'">'+precio_compra+'</td>'+
+                                '<td><input type="hidden" name="arrayprecioventa[]" value="'+precio_venta+'">'+precio_venta+'</td>'+
                                 '<td>'+subtotal[cont]+'</td>'+
                                 '<td><button type="button" class="btn btn-danger" onclick="eliminarProducto('+cont+')"><i class="fa-solid fa-trash"></i></button></td>'+
                               '</tr>';
@@ -296,6 +318,7 @@
         sumas-=(subtotal[id]);
         iva = Number(((sumas/100)*impuesto).toFixed(2));
         total=sumas+iva;
+        $('#impuesto').val(iva);
         
         $('#fila'+id).remove();
         

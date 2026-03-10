@@ -51,49 +51,49 @@
                                     <thead>
                                         <tr>
                                             
-                                            <th>Nombre</th>                                        
-                                            <th>Dirección</th>
-                                            <th>Documento</th>
-                                            <th>Tipo de Proveedor</th>
-                                            <th>Estado</th> 
+                                            <th>Comprobante</th>                                        
+                                            <th>Proveedor</th>
+                                            <th>Fecha y hora</th>
+                                            <th>Total</th>
                                             <th>Acción</th>                                           
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach($compras as $compra)
+                                        @foreach($compras as $item)
                                         <tr>
-                                            <td>{{$compra->persona->razon_social}}</td>
-                                            <td>{{$compra->persona->direccion}}</td>                                           
                                             <td>
-                                                <p class="fw-normal mb-1">{{$compra->persona->documento->tipo_documento}}</p>
-                                                <p class="text-muted mb-0">{{$compra->persona->numero_documento}}</p>
+                                                <p class="fw-semibold mb-1">{{strtoupper($item->comprobante->tipo_comprobante)}}</p>
+                                                <p class="text-muted mb-0">{{$item->numero_comprobane}}</p>
                                             </td>
-                                            <td>{{strtoupper($compra->persona->tipo_persona)}}</td>
+                                            <td>
+                                                <p class="fw-semibold mb-1">{{ucfirst($item->proveedore->persona->tipo_persona)}}</p>
+                                                <p class="text-muted mb-0">{{$item->proveedore->persona->razon_social}}</p>
+                                            </td>
+                                            <td>
+                                                {{
+                                                    \Carbon\Carbon::parse($item->fecha_hora)->format('d-m-Y').' '.   
+                                                    \Carbon\Carbon::parse($item->fecha_hora)->format('H:i')
+                                                }}
+                                            </td>
+                                            <td>{{$item->total}}</td>                                      
                                             
                                             <td>
-                                                @if($compra->persona->estado==1)
-                                                <span class="fw-bolder p-1 rounded bg-primary text-white text-center">Activo</span>
-                                                @else
-                                                 <span class="fw-bolder p-1 rounded bg-danger text-white text-center">Eliminado</span>
-                                                @endif 
-                                            </td>
-                                            <td>
                                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
-                                                    <form action="{{route('compras.edit',['compra' =>$compra])}}" method="get">
+                                                    <form action="{{route('compras.show',['compra'=> $item])}}" method="get">
+                                                        @method('GET')
                                                         @csrf
-                                                        <button type="submit" class="btn btn-info">Editar</button>                                                        
-                                                    </form>
-                                                    
-                                                    @if($compra->persona->estado==1)
-                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$compra->id}}">Eliminar</button>
+                                                        <button type="submit" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="">Ver</button>
+                                                    </form>                                                    
+                                                    @if($item->estado==1)
+                                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$item->id}}">Eliminar</button>
                                                     @else
-                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$compra->id}}">Restaurar</button>
+                                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$item->id}}">Restaurar</button>
                                                     @endif
                                               </div>
                                             </td>
                                         </tr>
 
-                                        <div class="modal fade" id="confirmModal-{{$compra->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="confirmModal-{{$item->id}}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -102,11 +102,11 @@
                                                     </div>
                                                     <div class="modal-body">
                                                      
-                                                      {{$compra->persona->estado == 1 ? '¿Seguro que quieres eliminar esta compra? ':'¿Seguro que quieres restaurar esta compra? ' }}
+                                                      {{'¿Seguro que quieres eliminar el registro? ' }}
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                                        <form action='{{route('compras.destroy',['compra' => $compra->id])}}' method="post">
+                                                        <form action='{{route('compras.destroy',['compra' => $item->id])}}' method="post">
                                                             @method('DELETE')
                                                             @csrf
                                                             <button type="submit" class="btn btn-danger">Confirmar</button> 
