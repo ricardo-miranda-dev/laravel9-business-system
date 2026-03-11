@@ -9,6 +9,19 @@ class Venta extends Model
 {
     use HasFactory;
     
+    protected $guarded = ['id'];
+
+
+    protected $fillable = [
+        'fecha_hora',
+        'impuesto',
+        'numero_comprobante',
+        'total',
+        'comprobante_id',
+        'cliente_id',
+        'user_id'
+    ];
+    
     public function cliente() {
         return $this->belongsTo(Cliente::class);
     }
