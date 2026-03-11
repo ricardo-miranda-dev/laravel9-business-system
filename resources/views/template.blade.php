@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="Sistema de Gestión" />
         <meta name="author" content="ricardo-miranda-dev" />
-        <title>Sistema de Ventas y Facturación - @yield('title')</title>
+        <title>Business Management System - @yield('title')</title>
 <!--        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />-->
         @stack('css')
         <link href="{{ asset('css/template.css') }}" rel="stylesheet" />
