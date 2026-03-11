@@ -9,6 +9,12 @@
                             </a>
                             
                             <div class="sb-sidenav-menu-heading">Módulos</div>
+                            
+                            <a class="nav-link" href="{{ route('proveedores.index')}}">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-truck"></i></div>
+                                Proveedores
+                            </a>
+                            
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsCompras" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-store"></i></div>
                                 Compras
@@ -20,6 +26,10 @@
                                     <a class="nav-link" href="{{ route('compras.create')}}">Crear</a>
                                 </nav>
                             </div>
+                            <a class="nav-link" href="{{ route('clientes.index')}}">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-handshake"></i></div>
+                                Clientes
+                            </a>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayoutsVentas" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-cart-shopping"></i></div>
                                 Ventas
@@ -31,7 +41,6 @@
                                     <a class="nav-link" href="{{ route('ventas.create')}}">Crear</a>
                                 </nav>
                             </div>
-                            
                             
                             <a class="nav-link" href="{{ route('categorias.index')}}">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-tag"></i></div>
@@ -48,16 +57,18 @@
                             <a class="nav-link" href="{{ route('productos.index')}}">
                                 <div class="sb-nav-link-icon"><i class="fa-brands fa-shopify"></i></div>
                                 Productos
-                            </a>
-                            <a class="nav-link" href="{{ route('clientes.index')}}">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-handshake"></i></div>
-                                Clientes
-                            </a>
-                            <a class="nav-link" href="{{ route('proveedores.index')}}">
-                                <div class="sb-nav-link-icon"><i class="fa-solid fa-truck"></i></div>
-                                Proveedores
-                            </a>
+                            </a>                                                      
                             
+                            <div class="sb-sidenav-menu-heading">Otros</div>
+                            
+                            <a class="nav-link" href="{{ route('users.index')}}">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-user"></i></div>
+                                Usuarios
+                            </a>
+                            <a class="nav-link" href="{{ route('roles.index')}}">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-person-circle-plus"></i></div>
+                                Roles
+                            </a>
                         </div>
                     </div>
                     <div class="sb-sidenav-footer">

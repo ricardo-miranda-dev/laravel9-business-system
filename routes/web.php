@@ -12,6 +12,8 @@ use App\Http\Controllers\VentaController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,7 +47,9 @@ Route::resources([
     'clientes' => ClienteController::class,
     'proveedores' => ProveedorController::class,
     'compras' => CompraController::class,
-    'ventas' => VentaController::class
+    'ventas' => VentaController::class,
+    'users' => UserController::class,
+    'roles' => RoleController::class
 ]);
 
 Route::get('/401', function () {
