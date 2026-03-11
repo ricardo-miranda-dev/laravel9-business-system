@@ -9,6 +9,9 @@ use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\VentaController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\LogoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,25 +24,17 @@ use App\Http\Controllers\VentaController;
 |
 */
 
-Route::get('/', function () {
-    return view('template');
-});
-
-Route::view('/panel', 'panel.index')->name('panel');
-//Route::get('/panel', function () {
-//    return view('panel.index');
+//Route::get('/', function () {
+//    return view('template');
 //});
+Route::get('/login', [LoginController::class,'index'])->name('login');
+Route::post('/login',[LoginController::class,'login']);
+Route::get('/logout',[LogoutController::class,'logout'])->name('logout');
 
-//Route::view('/categorias', 'categoria.index')->name('categorias');
+Route::get('/', [HomeController::class,'index'])->name('panel');
 
-//Route::resource('categorias', CategoriaController::class);
-//
-//Route::resource('presentaciones', PresentacionController::class);
-//
-//Route::resource('marcas', MarcaController::class);
-//
-//Route::resource('clientes', ClienteController::class);
-//
+
+
 //Route::resource('productos', ProductoController::class);
 
 Route::resources([
@@ -53,7 +48,14 @@ Route::resources([
     'ventas' => VentaController::class
 ]);
 
-
-Route::get('/login', function () {
-    return view('auth.login');
+Route::get('/401', function () {
+    return view('pages.401');
 });
+
+//Route::get('/login', function () {
+//    return view('auth.login');
+//});
+//Route::view('/panel', 'panel.index')->name('panel');
+//Route::get('/panel', function () {
+//    return view('panel.index');
+//});
