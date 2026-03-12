@@ -9,8 +9,9 @@
 @if(session('success'))
 <script>
     let message = "{{session('success')}}";
-    Swal.fire({
-        title: message,
+    let timerInterval;
+Swal.fire({
+  title: message,
         showClass: {
           popup: `
             animate__animated
@@ -24,8 +25,26 @@
             animate__fadeOutDown
             animate__faster
           `
-        }
-      });
+        },
+  html: "Cargando Módulos <b></b> DataFact.",
+  timer: 2700,
+  timerProgressBar: true,
+  didOpen: () => {
+    Swal.showLoading();
+    const timer = Swal.getPopup().querySelector("b");
+    timerInterval = setInterval(() => {
+      timer.textContent = `${Swal.getTimerLeft()}`;
+    }, 100);
+  },
+  willClose: () => {
+    clearInterval(timerInterval);
+  }
+}).then((result) => {
+  if (result.dismiss === Swal.DismissReason.timer) {
+    console.log("Módulos Cargados");
+  }
+});
+   
 </script>
 @endif
 <div class="container-fluid px-4">
