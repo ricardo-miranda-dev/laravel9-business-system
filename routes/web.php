@@ -14,6 +14,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,7 +50,8 @@ Route::resources([
     'compras' => CompraController::class,
     'ventas' => VentaController::class,
     'users' => UserController::class,
-    'roles' => RoleController::class
+    'roles' => RoleController::class,
+    'profile' => ProfileController::class
 ]);
 
 Route::get('/401', function () {
