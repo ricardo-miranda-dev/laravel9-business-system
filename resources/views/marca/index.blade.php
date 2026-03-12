@@ -34,12 +34,13 @@
                             <li class="breadcrumb-item"><a href="{{route('panel')}}">Inicio</a></li>
                             <li class="breadcrumb-item active">Marcas</li>
                         </ol>
+                        @can('crear-marca')
                         <div class="mb-4">
                             <a href="{{route('marcas.create')}}">
                                 <button type="button" class="btn btn-primary">Añadir nuevo registro</button>
                             </a>
                         </div>
-                         
+                        @endcan 
                         
                            <div class="card mb-4">
                             <div class="card-header">
@@ -71,15 +72,19 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                                    @can('editar-marca')
                                                     <form action="{{route('marcas.edit',['marca' =>$marca])}}" method="get">
 <!--                                                        @csrf-->
                                                         <button type="submit" class="btn btn-info">Editar</button>                                                        
                                                     </form>
+                                                    @endcan
+                                                    @can('eliminar-marca')
                                                     @if($marca->caracteristica->estado==1)
                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$marca->id}}">Eliminar</button>
                                                     @else
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$marca->id}}">Restaurar</button>
                                                     @endif
+                                                    @endcan
                                               </div>
                                             </td>
                                         </tr>

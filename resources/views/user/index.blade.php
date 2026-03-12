@@ -34,12 +34,13 @@
                             <li class="breadcrumb-item"><a href="{{route('panel')}}">Inicio</a></li>
                             <li class="breadcrumb-item active">Usuarios</li>
                         </ol>
+                        @can('crear-user')
                         <div class="mb-4">
                             <a href="{{route('users.create')}}">
                                 <button type="button" class="btn btn-primary">Añadir nuevo usuario</button>
                             </a>
                         </div>
-                        
+                        @endcan
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table me-1"></i>
@@ -64,13 +65,15 @@
                                             <td>{{$item->getRoleNames()->first()}}</td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                                    @can('editar-user')
                                                     <form action="{{route('users.edit',['user' =>$item])}}" method="get">
                                                         @csrf
                                                         <button type="submit" class="btn btn-info">Editar</button>                                                        
                                                     </form>                                                    
-                                                    
+                                                    @endcan
+                                                    @can('eliminar-user')
                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$item->id}}">Eliminar</button>                                                   
-                                                   
+                                                    @endcan
                                               </div>
                                             </td>
                                         </tr>

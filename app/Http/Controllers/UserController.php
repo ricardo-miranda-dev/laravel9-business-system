@@ -13,6 +13,13 @@ use Illuminate\Support\Arr;
 
 class UserController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:ver-user|crear-user|editar-user|eliminar-user',['only'=>['index']]);
+        $this->middleware('permission:crear-user',['only'=>['create','store']]);
+        $this->middleware('permission:editar-user',['only'=>['edit','update']]);
+        $this->middleware('permission:eliminar-user',['only'=>['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -41,7 +48,7 @@ class UserController extends Controller
             
             $fieldHash = Hash::make($request->password);
             
-            $request->merge(['password',$fieldHash]);
+            $request->merge(['password'=>$fieldHash]);
             $user = User::create($request->all());
             
             $user->assignRole($request->role);

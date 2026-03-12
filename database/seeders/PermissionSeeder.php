@@ -14,45 +14,55 @@ class PermissionSeeder extends Seeder
     public function run(): void
     {
         $permisos = [
-            'ver-categoria',
-            'crear-categoria',
-            'editar-categoria',
-            'eliminar-categoria',
+//            'ver-categoria',
+//            'crear-categoria',
+//            'editar-categoria',
+//            'eliminar-categoria',
+//            
+//            'ver-cliente',
+//            'crear-cliente',
+//            'editar-cliente',
+//            'eliminar-cliente',
+//            
+//            'ver-proveedore',
+//            'crear-proveedore',
+//            'editar-proveedore',
+//            'eliminar-proveedore',
+//            
+//            'ver-producto',
+//            'crear-producto',
+//            'editar-producto',
+//            'eliminar-producto',
+//            
+//            'ver-presentacione',
+//            'crear-presentacione',
+//            'editar-presentacione',
+//            'eliminar-presentacione',
+//            
+//            'ver-marca',
+//            'crear-marca',
+//            'editar-marca',
+//            'eliminar-marca',
+//            
+//            'ver-compra',
+//            'crear-compra',
+//            'mostrar-compra',
+//            'eliminar-compra',
+//            
+//            'ver-venta',
+//            'crear-venta',
+//            'mostrar-venta',
+//            'eliminar-venta',
             
-            'ver-cliente',
-            'crear-cliente',
-            'editar-cliente',
-            'eliminar-cliente',
+            'ver-user',
+            'crear-user',
+            'editar-user',
+            'eliminar-user',
             
-            'ver-proveedore',
-            'crear-proveedore',
-            'editar-proveedore',
-            'eliminar-proveedore',
-            
-            'ver-producto',
-            'crear-producto',
-            'editar-producto',
-            'eliminar-producto',
-            
-            'ver-presentacione',
-            'crear-presentacione',
-            'editar-presentacione',
-            'eliminar-presentacione',
-            
-            'ver-marca',
-            'crear-marca',
-            'editar-marca',
-            'eliminar-marca',
-            
-            'ver-compra',
-            'crear-compra',
-            'mostrar-compra',
-            'eliminar-compra',
-            
-            'ver-venta',
-            'crear-venta',
-            'mostrar-venta',
-            'eliminar-venta',
+            'ver-role',
+            'crear-role',
+            'editar-role',
+            'eliminar-role',
         ];
         
         foreach ($permisos as $permiso) {

@@ -34,11 +34,13 @@
                             <li class="breadcrumb-item"><a href="{{route('panel')}}">Inicio</a></li>
                             <li class="breadcrumb-item active">Compras</li>
                         </ol>
+                        @can('crear-compra')
                         <div class="mb-4">
                             <a href="{{route('compras.create')}}">
                                 <button type="button" class="btn btn-primary">Añadir nuevo registro</button>
                             </a>
                         </div>
+                        @endcan
                          
                         
                            <div class="card mb-4">
@@ -79,16 +81,20 @@
                                             
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                                    @can('mostrar-compra')
                                                     <form action="{{route('compras.show',['compra'=> $item])}}" method="get">
                                                         @method('GET')
                                                         @csrf
                                                         <button type="submit" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="">Ver</button>
-                                                    </form>                                                    
+                                                    </form>
+                                                    @endcan
+                                                    @can('eliminar-compra')
                                                     @if($item->estado==1)
                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$item->id}}">Eliminar</button>
                                                     @else
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$item->id}}">Restaurar</button>
                                                     @endif
+                                                    @endcan
                                               </div>
                                             </td>
                                         </tr>

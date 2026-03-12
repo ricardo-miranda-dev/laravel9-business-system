@@ -13,6 +13,13 @@ use Carbon\Carbon;
 
 class CompraController extends Controller
 {
+    function __construct()
+    {
+        $this->middleware('permission:ver-compra|crear-compra|editar-compra|eliminar-compra',['only'=>['index']]);
+        $this->middleware('permission:crear-compra',['only'=>['create','store']]);
+        $this->middleware('permission:mostrar-compra',['only'=>['edit','update']]);
+        $this->middleware('permission:eliminar-compra',['only'=>['destroy']]);
+    }
     /**
      * Display a listing of the resource.
      */

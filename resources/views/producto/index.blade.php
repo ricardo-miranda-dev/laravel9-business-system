@@ -34,12 +34,13 @@
                             <li class="breadcrumb-item"><a href="{{route('panel')}}">Inicio</a></li>
                             <li class="breadcrumb-item active">Productos</li>
                         </ol>
+                        @can('crear-producto')
                         <div class="mb-4">
                             <a href="{{route('productos.create')}}">
                                 <button type="button" class="btn btn-primary">Añadir nuevo registro</button>
                             </a>
                         </div>
-                         
+                        @endcan 
                         
                            <div class="card mb-4">
                             <div class="card-header">
@@ -83,16 +84,20 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+                                                    @can('editar-producto')
                                                     <form action="{{route('productos.edit',['producto' =>$producto])}}" method="get">
                                                         @csrf
                                                         <button type="submit" class="btn btn-info">Editar</button>                                                        
                                                     </form>
+                                                    @endcan
                                                     <button type="submit" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#verModal-{{$producto->id}}">Ver</button>
+                                                    @can('eliminar-producto')
                                                     @if($producto->estado==1)
                                                     <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$producto->id}}">Eliminar</button>
                                                     @else
                                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmModal-{{$producto->id}}">Restaurar</button>
                                                     @endif
+                                                    @endcan
                                               </div>
                                             </td>
                                         </tr>
